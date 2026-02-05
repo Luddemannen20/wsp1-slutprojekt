@@ -17,7 +17,12 @@ class App < Sinatra::Base
 
     # Routen /
     get '/' do
-        erb :index
+        redirect('/recipes')
     end
 
+    get '/recipes' do
+      @recipes = db.execute('SELECT * FROM recipes')
+      p @recipes
+      erb(:"recipes/index")
+    end
 end
