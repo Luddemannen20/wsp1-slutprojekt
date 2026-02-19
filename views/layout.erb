@@ -1,19 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="sv">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Recept Bolaget</title>
-    <link rel="stylesheet" type="text/css" href="/style.css?<%=Time.now.to_i%>">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Recept Bolaget</title>
+  <link rel="stylesheet" type="text/css" href="/style.css?<%= Time.now.to_i %>">
 </head>
+
 <body>
-    <h1>Recept Bolaget</h1>
-    <hr>
-    <nav>
-        <ul>
-            <li><a href="/recipes/new">Nytt recept</a></li>
-        </ul>
-    </nav>
-    <hr>
+  <header class="topbar">
+    <div class="container topbar__inner">
+      <a class="brand" href="/">Recept Bolaget</a>
+
+      <nav class="actions">
+        <a class="btn btn--ghost" href="/groups">Groups</a>
+        <a class="btn btn--ghost" href="/login">Log in</a>
+        <a class="btn btn--ghost" href="/signup">Sign up</a>
+        <a class="btn btn--primary" href="/recipes/new">Create new</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <h1 class="title">Recept Bolaget</h1>
+    <p class="subtitle">Spara och dela recept.</p>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <span class="muted">© <%= Time.now.year %> Recept Bolaget</span>
+    </div>
+  </footer>
 </body>
 </html>
