@@ -1,0 +1,27 @@
+<h1>Nytt recept:</h1>
+
+<a href="/recipes" class="back-button">Gå tillbaks</a>
+
+<form action="/recipes" method="post">	
+	
+  <label>Recept
+    <input type="text" name="recipe_name" required>
+  </label>
+    
+  <label>Tid (minuter)
+    <input type="number" name="recipe_time" required>
+  </label>
+
+  <label>Beskrivning
+    <input type="text" name="recipe_description" required>
+  </label>
+
+  <label>Kategori
+    <select name="recipe_category" required>
+      <option value="0">Varmrätt</option>
+      <option value="1">Kallrätt</option>
+    </select>
+  </label>
+
+  <input type="submit" value="Spara">
+</form>

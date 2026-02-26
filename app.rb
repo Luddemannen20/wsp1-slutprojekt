@@ -33,10 +33,16 @@ class App < Sinatra::Base
     post '/recipes' do
       p params
       recipe_name = params['recipe_name']
-      recipe_description = params['recipe_description']
       recipe_time = params['recipe_time']
-      recipe_country = params['recipe_country']
-      db.execute("INSERT INTO recipes (name, time, description) Values(?,?,?)", [recipe_name, recipe_time, recipe_description])
-      redirect("/fruits")
+      recipe_description = params['recipe_description']
+      recipe_category = params['recipe_category']
+      
+      db.execute("INSERT INTO recipes (name, time, description, category) Values(?,?,?,?)", [recipe_name, recipe_time, recipe_description, recipe_category.to_i])
+      redirect("/recipes")
+    end
+
+    post '/recipes/:id/delete' do | id |
+      db.execute('DELETE FROM recipes WHERE id=?', id)
+      redirect("/recipes")
     end
 end

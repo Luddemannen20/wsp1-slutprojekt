@@ -1,13 +1,39 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Projekt #2</title>
-    <link rel="stylesheet" type="text/css" href="/style.css?<%=Time.now.to_i%>">
-</head>
-<body>
-  <h1>Webbserverprogrammering 1 - Slutprojekt</h1>
-  <img src="/img/glhf.png">
-</body>
-</html>
+<h1>Varmrätter</h1> <!--Samlar alla varmrätter i en gemensamlista där den skriver ut och visar: namn, tid, beskrivning. För varje recept finns det en individuell delete respektive update knapp för att ta bort och updatera informationen. Mha av category som fungerar som en integer där varmrätt = 0. Utifrån if satsen så hämtar den alla recept som har category = 0 och skriver ut dom under rubriken varmrätt.-->
+<div class="recipe-list">
+  <% @recipes.each do |recipe| %>
+    <% if recipe["category"].to_i == 0 %>
+        <strong><%= recipe["name"] %></strong><br> <!--skriver ut namnet-->
+
+        <p><em>Tid:</em> <%= recipe["time"] %> min</p> <!--skriver ut hur lång tid det tar-->
+        <p><em>Beskrivning:</em> <%= recipe["description"] %></p> <!--skriver ut beskrivningen-->
+
+        <form class="update" action="/recipes/<%= recipe["id"] %>/edit" method="get"> <!--update knapp-->
+          <input type="submit" value="Ändra">
+        </form>
+
+        <form class="delete" action="/recipes/<%= recipe["id"] %>/delete" method="post"> <!--delete knapp-->
+          <input type="submit" value="Ta bort">
+        </form>
+    <% end %>
+  <% end %>
+</div>
+    
+<h1>Kallrätter</h1>
+<div class="recipe-list">
+  <% @recipes.each do |recipe| %>
+    <% if recipe["category"].to_i == 1 %> <!--Om category är samma som 1 så läggs receptet under kallrätter-->
+        <strong><%= recipe["name"] %></strong><br>
+
+        <p><em>Tid:</em> <%= recipe["time"] %> min</p> <!--tiden-->
+        <p><em>Beskrivning:</em> <%= recipe["description"] %></p> <!--beskrivning-->
+
+        <form class="update" action="/recipes/<%= recipe["id"] %>/edit" method="get"> <!--update knapp-->
+          <input type="submit" value="Ändra">
+        </form>
+
+        <form class="delete" action="/recipes/<%= recipe["id"] %>/delete" method="post"> <!--delete knapp-->
+          <input type="submit" value="Ta bort">
+        </form>
+    <% end %>
+  <% end %>
+</div>
