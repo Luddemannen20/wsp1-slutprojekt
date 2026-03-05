@@ -42,6 +42,23 @@ class Seeder
     @db.results_as_hash = true
     @db
   end
+
+  def self.drop_tables
+    db.execute('DROP TABLE IF EXISTS users')
+  end
+
+  def self.create_tables
+    db.execute('CREATE TABLE users (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                username TEXT NOT NULL,
+                password TEXT NOT NULL)')
+  end
+
+  def self.populate_tables
+    password_hashed = Bcrypt::Password.create("123")
+    p "Storing hashed password (#{password_hashed}) to DB. Clear text password (123) never saved."
+    db.execute('INSERT INTO users (username, password) VALUES (?, ?)', ["Ludvig", password_hashed])
+  end
 end
 
 Seeder.seed!
