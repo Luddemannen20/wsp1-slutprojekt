@@ -14,9 +14,19 @@
 
       <nav class="actions">
         <a class="btn btn--ghost" href="/groups">Groups</a>
-        <a class="btn btn--ghost" href="/login">Log in</a>
-        <a class="btn btn--ghost" href="/signup">Sign up</a>
+        
+        <% if session[:user_id]%>
+          <form action="/logout" method="post" style="display:inline;">
+            <button type="submit" class="btn btn--ghost link-button">Log out</button>
+          </form>
+
         <a class="btn btn--primary" href="/recipes/new">Create new</a>
+        
+        <%else%>
+        <a class="btn btn--ghost" href="/login">Log in</a>
+        <a class="btn btn--ghost" href="/users/new">Sign up</a>
+        <%end%>
+        
       </nav>
     </div>
   </header>
