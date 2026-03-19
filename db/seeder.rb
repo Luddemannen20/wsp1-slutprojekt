@@ -26,7 +26,8 @@ class Seeder
         name TEXT NOT NULL,
         time INTEGER,
         description TEXT,
-        category INTEGER
+        category INTEGER,
+        user_id INTEGER
       )
     ')
 
@@ -40,24 +41,10 @@ class Seeder
   end
 
   def self.populate_tables
+    
     db.execute(
-      'INSERT INTO recipes (name, time, description, category) VALUES (?, ?, ?, ?)',
-      ['Pasta Carbonara', 20, 'Krämig pasta med bacon.', 0]
-    )
-
-    db.execute(
-      'INSERT INTO recipes (name, time, description, category) VALUES (?, ?, ?, ?)',
-      ['Grekisk sallad', 10, 'Tomat, gurka, fetaost och oliver.', 1]
-    )
-
-    db.execute(
-      'INSERT INTO recipes (name, time, description, category) VALUES (?, ?, ?, ?)',
-      ['Kycklinggryta', 45, 'Gryta med kyckling och curry.', 0]
-    )
-
-    db.execute(
-      'INSERT INTO recipes (name, time, description, category) VALUES (?, ?, ?, ?)',
-      ['Kall pastasallad', 15, 'Serveras kall med dressing.', 1]
+      'INSERT INTO recipes (name, time, description, category, user_id) VALUES (?, ?, ?, ?, ?)',
+      ['Kall pastasallad', 15, 'Serveras kall med dressing.', 1, 1]
     )
 
     password_hashed = BCrypt::Password.create('123')

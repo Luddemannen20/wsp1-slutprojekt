@@ -50,8 +50,9 @@ class App < Sinatra::Base
       recipe_time = params['recipe_time']
       recipe_description = params['recipe_description']
       recipe_category = params['recipe_category']
+      user_id = session[:user_id]
       
-      db.execute("INSERT INTO recipes (name, time, description, category) Values(?,?,?,?)", [recipe_name, recipe_time, recipe_description, recipe_category.to_i])
+      db.execute("INSERT INTO recipes (name, time, description, category, user_id) Values(?,?,?,?,?)", [recipe_name, recipe_time, recipe_description, recipe_category.to_i, user_id.to_i])
       redirect("/recipes")
     end
 
