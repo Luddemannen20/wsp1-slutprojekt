@@ -38,6 +38,14 @@ class Seeder
         password TEXT NOT NULL
       )
     ')
+
+    db.execute('
+    CREATE TABLE groups (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    group_name TEXT NOT NULL UNIQUE,
+    )
+    
+    ')
   end
 
   def self.populate_tables

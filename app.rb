@@ -157,6 +157,12 @@ class App < Sinatra::Base
       db.execute("INSERT INTO users (username, password) VALUES (?, ?)", [username, hashed_password])
       redirect '/login'
     end
+
+    post '/users/:id/delete' do
+      db.execute('DELETE FROM users WHERE id=?', session[:user_id])
+      session.clear
+      redirect("/login")
+    end
   end
 
 
