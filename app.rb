@@ -5,6 +5,8 @@ require 'securerandom'
 require 'bcrypt'
 require 'sqlite3'
 require_relative 'config'
+require_relative 'models/recipe'
+require_relative 'models/user'
 
 class App < Sinatra::Base
   
@@ -34,7 +36,8 @@ class App < Sinatra::Base
     end
 
     get '/recipes' do
-      @recipes = db.execute('SELECT * FROM recipes')
+      @recipes = Recipe.all()
+      p @recipes
       erb(:"recipes/index")
     end
 
@@ -52,21 +55,24 @@ class App < Sinatra::Base
       recipe_category = params['recipe_category']
       user_id = session[:user_id]
       
-      db.execute("INSERT INTO recipes (name, time, description, category, user_id) Values(?,?,?,?,?)", [recipe_name, recipe_time, recipe_description, recipe_category.to_i, user_id.to_i])
+      @create = Recipe.create(recipe_name, recipe_time, recipe_description, recipe_category, user_id)
+      p @create
       redirect("/recipes")
     end
 
     post '/recipes/:id/delete' do | id |
       redirect '/access_denied' unless session[:user_id]
     
-      db.execute('DELETE FROM recipes WHERE id=?', id)
+      @delete = Recipe.delete(id)
+      p @delete
       redirect("/recipes")
     end
 
     get '/recipes/:id/edit' do | id |
       redirect '/access_denied' unless session[:user_id]
       
-      @recipes = db.execute('SELECT * FROM recipes WHERE id=?', id).first
+      @recipes = Recipe.all_edit(id)
+      p @recipes
       erb(:"recipes/edit")
     end
 
@@ -77,7 +83,9 @@ class App < Sinatra::Base
       recipe_time = params['recipe_time']
       recipe_description = params['recipe_description']
       recipe_category = params['recipe_category']
-      db.execute("UPDATE recipes SET name=?, time=?, description=?, category=? WHERE id=?", [recipe_name, recipe_time, recipe_description, recipe_category.to_i, id])
+      
+      @edit = Recipe.edit(recipe_name, recipe_time, recipe_description, recipe_category, id)
+      p @edit
       redirect("/recipes")
     end
 
@@ -160,6 +168,7 @@ class App < Sinatra::Base
 
     post '/users/:id/delete' do
       db.execute('DELETE FROM users WHERE id=?', session[:user_id])
+      db.execute('DELETE FROM recipes WHERE user_id=?', session[:user_id])
       session.clear
       redirect("/login")
     end
