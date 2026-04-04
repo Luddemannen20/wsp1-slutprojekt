@@ -17,16 +17,9 @@ class App < Sinatra::Base
     set :session_secret, SecureRandom.hex(64)
   end
 
-  def db
-      return @db if @db
-      @db = SQLite3::Database.new(DB_PATH)
-      @db.results_as_hash = true
-      return @db
-    end
-
     before do
       if session[:user_id]
-        @current_user = db.execute("SELECT * FROM users WHERE id = ?", [session[:user_id]]).first
+        @current_user = User.all(session[:user_id])
         ap @current_user
       end
     end
@@ -56,7 +49,6 @@ class App < Sinatra::Base
       user_id = session[:user_id]
       
       @create = Recipe.create(recipe_name, recipe_time, recipe_description, recipe_category, user_id)
-      p @create
       redirect("/recipes")
     end
 
@@ -64,7 +56,6 @@ class App < Sinatra::Base
       redirect '/access_denied' unless session[:user_id]
     
       @delete = Recipe.delete(id)
-      p @delete
       redirect("/recipes")
     end
 
@@ -72,7 +63,6 @@ class App < Sinatra::Base
       redirect '/access_denied' unless session[:user_id]
       
       @recipes = Recipe.all_edit(id)
-      p @recipes
       erb(:"recipes/edit")
     end
 
@@ -85,7 +75,6 @@ class App < Sinatra::Base
       recipe_category = params['recipe_category']
       
       @edit = Recipe.edit(recipe_name, recipe_time, recipe_description, recipe_category, id)
-      p @edit
       redirect("/recipes")
     end
 
@@ -98,7 +87,7 @@ class App < Sinatra::Base
       request_username = params[:username]
       request_plain_password = params[:password]
 
-      user = db.execute("SELECT * FROM users WHERE username = ?", [request_username]).first
+      user = User.all_username(request_username)
 
       unless user
         ap "/login : Invalid username."
@@ -153,7 +142,7 @@ class App < Sinatra::Base
         return erb(:"users/new")
       end
 
-      existing_user = db.execute("SELECT * FROM users WHERE username = ?", [username]).first
+      existing_user = User.all_username(username)
 
       if existing_user
         @error = "Användarnamnet finns redan!"
@@ -162,18 +151,14 @@ class App < Sinatra::Base
 
       hashed_password = BCrypt::Password.create(password)
 
-      db.execute("INSERT INTO users (username, password) VALUES (?, ?)", [username, hashed_password])
+      @create_user = User.create(username, hashed_password)
       redirect '/login'
     end
 
     post '/users/:id/delete' do
-      db.execute('DELETE FROM users WHERE id=?', session[:user_id])
-      db.execute('DELETE FROM recipes WHERE user_id=?', session[:user_id])
+      @delete_user = User.delete(session[:user_id])
+      @delete_userRecipes = User.delete_user_recipes(session[:user_id])
       session.clear
       redirect("/login")
     end
-  end
-
-
-
-    
+end
