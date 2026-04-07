@@ -26,6 +26,10 @@ class User
   end
 
   def self.delete_user_recipes(user_id)
-    db.execute('DELETE FROM recipes WHERE user_id=?', user_id)
+    db.execute("DELETE FROM recipes WHERE user_id=?", user_id)
+  end
+
+  def self.edit(password, id)
+    db.execute("UPDATE users SET password = ? WHERE id = ?", [password, id])
   end
 end

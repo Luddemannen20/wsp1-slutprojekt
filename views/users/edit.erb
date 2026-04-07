@@ -1,0 +1,11 @@
+<h2> Update your password </h2>
+
+<h2>Here you can change your password <%=@user['username'].capitalize%></h2>
+
+<form action="/users/<%= session[:user_id]%>/update" method="post">
+    <label> Password
+        <input type="password" name="password">
+    </label>
+    
+    <input type="submit" value="uppdatera">
+</form>

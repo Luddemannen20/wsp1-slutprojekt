@@ -161,4 +161,27 @@ class App < Sinatra::Base
       session.clear
       redirect("/login")
     end
+
+    get '/users/:id/edit' do | id |
+      id = session[:user_id]
+      
+      @user = User.all(id)
+      halt 404, "User not found" unless @user
+
+      erb(:"users/edit")
+    end
+
+    post '/users/:id/update' do
+      
+      id = session[:user_id]
+      password = params[:password]
+
+      if password.empty?
+        return "Password cannot be empty"
+      else 
+        hashed_password = BCrypt::Password.create(password)
+        @update_password = User.edit(hashed_password, id)
+        redirect('/admin')
+      end
+    end
 end
