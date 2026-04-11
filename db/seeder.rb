@@ -15,6 +15,8 @@ class Seeder
   end
 
   def self.drop_tables
+    db.execute('DROP TABLE IF EXISTS group_members')
+    db.execute('DROP TABLE IF EXISTS groups')
     db.execute('DROP TABLE IF EXISTS recipes')
     db.execute('DROP TABLE IF EXISTS users')
   end
@@ -37,6 +39,24 @@ class Seeder
         username TEXT NOT NULL UNIQUE,
         password TEXT NOT NULL
       )
+    ')
+
+    db.execute('
+      CREATE TABLE groups (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL
+      )
+    ')
+
+    db.execute('
+      CREATE TABLE group_members (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER NOT NULL,
+        group_id INTEGER NOT NULL,
+        UNIQUE(user_id, group_id),
+        FOREIGN KEY(user_id) REFERENCES users(id),
+        FOREIGN KEY(group_id) REFERENCES groups(id)
+      ) 
     ')
   end
 
