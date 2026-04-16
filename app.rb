@@ -7,6 +7,7 @@ require 'sqlite3'
 require_relative 'config'
 require_relative 'models/recipe'
 require_relative 'models/user'
+require_relative 'models/group'
 
 class App < Sinatra::Base
   
@@ -183,5 +184,19 @@ class App < Sinatra::Base
         @update_password = User.edit(hashed_password, id)
         redirect('/admin')
       end
+    end
+
+    get '/groups' do
+      
+      @groups = Group.joined_for_user(session[:user_id])
+      @other_groups = Group.not_joined_for_user(session[:user_id])
+
+      erb(:"groups/index")
+    end
+
+    post '/groups/:id/join' do | id |
+
+      Group.join(session[:user_id], id)
+      redirect '/groups'
     end
 end

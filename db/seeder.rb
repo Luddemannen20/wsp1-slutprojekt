@@ -74,6 +74,21 @@ class Seeder
       'INSERT INTO users (username, password) VALUES (?, ?)',
       ['Ludvig', password_hashed]
     )
+
+    db.execute(
+      'INSERT INTO groups (name) VALUES (?)',
+      ['Familjen Larsson']
+    )
+
+    db.execute(
+      'INSERT INTO groups (name) VALUES (?)',
+      ['Hej']
+      )
+
+    db.execute(
+      'INSERT INTO group_members (user_id, group_id) VALUES (?, ?)',
+      [1, 1]
+    )
   end
 
   private

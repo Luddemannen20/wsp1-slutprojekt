@@ -13,9 +13,10 @@
       <a class="brand" href="/">Recept Bolaget</a>
 
       <nav class="actions">
-        <a class="btn btn--ghost" href="/groups">Groups</a>
         
         <% if session[:user_id]%>
+          <a class="btn btn--ghost" href="/groups">Groups</a>
+          
           <form action="/logout" method="post" style="display:inline;">
             <button type="submit" class="btn btn--ghost link-button">Log out</button>
           </form>

@@ -1,0 +1,14 @@
+<h1>Dina grupper</h1>
+<% @groups.each do |group| %>
+  <p><%= group['name'] %></p>
+<% end %>
+
+<h1>Andra grupper</h1>
+<% @other_groups.each do |group| %>
+  <p>
+    <%= group['name'] %>
+    <form action="/groups/<%= group['id'] %>/join" method="post" style="display:inline;">
+      <input type="submit" value="Gå med">
+    </form>
+  </p>
+<% end %>
